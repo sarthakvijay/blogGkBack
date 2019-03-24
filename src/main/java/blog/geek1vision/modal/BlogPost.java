@@ -10,26 +10,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.Temporal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
 @Entity
-@Table(name = "gk1vision")
+@Table(name = "blogPost")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, 
         allowGetters = true)
 
-public class GkModal implements Serializable {
+public class BlogPost implements Serializable {
 	
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -39,7 +38,7 @@ public class GkModal implements Serializable {
     @NotBlank
     private String content;
     
-	@NotBlank
+    @NotBlank
     private String image;
 
 	@NotBlank 
@@ -57,6 +56,16 @@ public class GkModal implements Serializable {
     @NotBlank
     private String stream;
     
+    private Long rating;
+    
+
+	public Long getRating() {
+		return rating;
+	}
+
+	public void setRating(Long rating) {
+		this.rating = rating;
+	}
 
 	public Long getId() {
 		return id;
@@ -155,11 +164,11 @@ public class GkModal implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public GkModal() {
+	public BlogPost() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+    
+    
 
 }
-	
-
