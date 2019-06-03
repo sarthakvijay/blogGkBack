@@ -1,4 +1,4 @@
-package modal;
+package blog.geek1vision.modal;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,7 +19,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.Temporal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.persistence.*;
 
 
 @Entity
@@ -40,7 +39,10 @@ public class GkModal implements Serializable {
     @NotBlank
     private String content;
     
-    @NotBlank 
+	@NotBlank
+    private String image;
+
+	@NotBlank 
     private String tags;
     
     @NotBlank
@@ -49,22 +51,20 @@ public class GkModal implements Serializable {
     @NotBlank
     private String aboutAuthor;
     
-    @NotBlank
-    private Long star;
-    
     @NotBlank 
     private String subject;
     
     @NotBlank
     private String stream;
     
-
-    public Long getStar() {
-		return star;
+    private Long days;
+    
+	public Long getDays() {
+		return days;
 	}
 
-	public void setStar(Long star) {
-		this.star = star;
+	public void setDays(Long days) {
+		this.days = days;
 	}
 
 	public Long getId() {
@@ -114,6 +114,14 @@ public class GkModal implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public String getTags() {

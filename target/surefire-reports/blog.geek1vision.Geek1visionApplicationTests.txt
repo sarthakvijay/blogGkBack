@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: blog.geek1vision.Geek1visionApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.28 s - in blog.geek1vision.Geek1visionApplicationTests
