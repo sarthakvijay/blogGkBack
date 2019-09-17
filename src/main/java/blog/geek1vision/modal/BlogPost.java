@@ -1,6 +1,7 @@
 package blog.geek1vision.modal;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,26 +11,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.Temporal;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
 @Entity
-@Table(name = "gk1vision")
+@Table(name = "blogPost")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, 
         allowGetters = true)
-
-public class GkModal implements Serializable {
+@Component("ScoreCalculation")
+public class BlogPost implements Serializable, Comparable<BlogPost> {
 	
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -39,7 +38,7 @@ public class GkModal implements Serializable {
     @NotBlank
     private String content;
     
-	@NotBlank
+    @NotBlank
     private String image;
 
 	@NotBlank 
@@ -57,14 +56,34 @@ public class GkModal implements Serializable {
     @NotBlank
     private String stream;
     
+    private Long rating;
+    
     private Long days;
     
+    private Long score;
+
+	public Long getScore() {
+		return score;
+	}
+
+	public void setScore(Long score) {
+		this.score = score;
+	}
+
 	public Long getDays() {
 		return days;
 	}
 
 	public void setDays(Long days) {
 		this.days = days;
+	}
+
+	public Long getRating() {
+		return rating;
+	}
+
+	public void setRating(Long rating) {
+		this.rating = rating;
 	}
 
 	public Long getId() {
@@ -164,11 +183,17 @@ public class GkModal implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public GkModal() {
+	public BlogPost() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public int compareTo(BlogPost blogPost) {
+        return this.score < blogPost.score ? 1 : this.score > blogPost.score ? -1 : 0;
+    }
+    
 }
-	
+
+
 

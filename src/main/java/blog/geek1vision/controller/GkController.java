@@ -1,4 +1,4 @@
-package controller;
+package blog.geek1vision.controller;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,42 +17,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import exception.ResourceNotFoundException;
-import modal.GkModal;
-import repository.GkRepository;
+import blog.geek1vision.exception.ResourceNotFoundException;
+import blog.geek1vision.modal.GkModal;
+import blog.geek1vision.repository.GkRepository;
 
 @RestController
 @RequestMapping("/api")
 public class GkController {
 
 	@Autowired
-	GkModal blog;
-	
-	@Autowired
 	GkRepository repository;
-	
+
 	@GetMapping("/blog")
-	public List<GkModal> getAllBlog(){
+	@CrossOrigin(origins = { "http://www.geek1vision.com", "http://d2rmczqy1xsdmr.cloudfront.net"})
+	@PreAuthorize("permitAll()")
+	public List<GkModal> getAllBlog() {
 		return repository.findAll();
 	}
-	
+
 	@PostMapping("/blog")
+	@CrossOrigin(origins = { "http://www.geek1vision.com", "http://d2rmczqy1xsdmr.cloudfront.net"})
 	public GkModal addBlog(@Valid @RequestBody GkModal blog) {
 		return repository.save(blog);
 	}
-	
+
 	@GetMapping("/blog/{id}")
-	public GkModal getOneBlog(@PathVariable Long blogId) {
-		return repository.findById(blogId)
-				.orElseThrow(()-> new ResourceNotFoundException("Blog", "id", blogId));
+	@CrossOrigin(origins = { "http://www.geek1vision.com", "http://d2rmczqy1xsdmr.cloudfront.net"})
+	public GkModal getOneBlog(@PathVariable(value = "id") Long blogId) {
+		return repository.findById(blogId).orElseThrow(() -> new ResourceNotFoundException("Blog", "id", blogId));
 	}
-	
+
 	@PutMapping("/blog/{id}")
-	public GkModal editBlog(@Valid @RequestBody GkModal blog, @PathVariable(value="id") Long blogId ) {
+	@CrossOrigin(origins = { "http://www.geek1vision.com", "http://d2rmczqy1xsdmr.cloudfront.net"})
+	public GkModal editBlog(@Valid @RequestBody GkModal blog, @PathVariable(value = "id") Long blogId) {
 		GkModal blogOne = repository.findById(blogId)
 				.orElseThrow(() -> new ResourceNotFoundException("Blog", "id", blogId));
-		
-		blogOne.setStar(blog.getStar());
+
 		blogOne.setTags(blog.getTags());
 		blogOne.setContent(blog.getContent());
 		blogOne.setAuthor(blog.getAuthor());
@@ -58,14 +60,16 @@ public class GkController {
 		blogOne.setTitle(blog.getTitle());
 		blogOne.setSubject(blog.getSubject());
 		blogOne.setStream(blog.getStream());
+		blogOne.setDays(blog.getDays());
 		return blogOne;
 	}
-	
+
 	@DeleteMapping("blog/{id}")
-	public ResponseEntity<?> deleteBlog(@PathVariable(value = "id") Long blogId){
+	@CrossOrigin(origins = { "http://www.geek1vision.com", "http://d2rmczqy1xsdmr.cloudfront.net"})
+	public ResponseEntity<?> deleteBlog(@PathVariable(value = "id") Long blogId) {
 		repository.deleteById(blogId);
+		System.out.print("delete function called");
 		return ResponseEntity.ok().build();
 	}
-	
-	
+
 }
